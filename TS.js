@@ -237,3 +237,186 @@ reverse(arrayOfStrs);
 reverse(arrayOfTup);
 // const u1: UserKeysNoMeta = 'name';
 // const u2: UserKeysNoMeta = 'createdAt'; // error
+///////////////////////////////////////////////////////////////////
+// GENERIC TYPES
+var cars = ['Citroen', 'Peugeot'];
+var cars2 = ['Toyota', 'Suzuki']; // generic
+// const promise: Promise<string> = new Promise(resolve => {
+//   setTimeout(() => {
+//     resolve('Promise resolved')
+//   }, 3000)
+// });
+var promise = new Promise(function (resolve) {
+    setTimeout(function () {
+        resolve('Promise resolved');
+    }, 3000);
+});
+promise.then(function (data) {
+    console.log(data.trim());
+});
+function mergeObjects(a, b) {
+    return Object.assign({}, a, b);
+}
+var merged = mergeObjects({ name: 'Dave' }, { band: 'Nirvana' });
+console.log(merged);
+function withCount(value) {
+    return {
+        value: value,
+        count: value.length + " chars in this object"
+    };
+}
+console.log(withCount('Hi, may I? )'));
+function getObjectValue(obj, key) {
+    return obj[key];
+}
+var person = {
+    name: 'Dave',
+    band: 'Foo Fighters'
+};
+console.log(getObjectValue(person, 'name'));
+console.log(getObjectValue(person, 'band'));
+var createAndValidateCar = function (model, year) {
+    var car = {};
+    if (model.length > 3) {
+        car.model = model;
+    }
+    if (year > 2000) {
+        car.year = year;
+    }
+    return car;
+};
+var someFastCars = ['Toyota', 'Citroen'];
+//someFastCars.shift();
+var peugeot = {
+    model: '307',
+    year: 2007
+};
+//peugeot.year = 2016;
+///////////////////////////////////////////////////////////////////////
+// DECORATORS
+// function Log(constructor: Function) {
+// }
+// function Log2(target: any, propName: string | Symbol) {
+// }
+// function Log3(target: any, propName: string | Symbol, descriptor: PropertyDescriptor) {
+// }
+// @Log
+// class TestComponent {
+//   @Log2
+//   name: string
+//   @Log3
+//   get componentName() {
+//     return this.name;
+//   }
+//   constructor(name: string) {
+//     this.name = name;
+//   }
+//   @Log3
+//   logName(): void {
+//     console.log(this.name);
+//   }
+// }
+// interface ComponentAngularDecorator {
+//   selector: string
+//   template: string
+// }
+// function ComponentAngular(config: ComponentAngularDecorator) {
+//   return function <T extends { new(...args: any[]): object }>(Constructor: T) {
+//     return class extends Constructor {
+//       constructor(...args: any[]) {
+//         super(...args);
+//         const el = document.querySelector(config.selector)!;
+//         el.innerHTML = config.template;
+//       }
+//     }
+//   }
+// }
+// function Bind(_: any, _2: any, descriptor: PropertyDescriptor): PropertyDescriptor {
+//   const orig = descriptor.value;
+//   return {
+//     configurable: true,
+//     enumerable: false,
+//     get() {
+//       return orig.bind(this);
+//     }
+//   }
+// }
+// @ComponentAngular({
+//   selector: '#test',
+//   template: `
+//     <div class="card">
+//       <div class="card-content">
+//         <span class="card-title">Card Component</span>
+//       </div>
+//     </div>
+//   `,
+// })
+// class TestComponent1 {
+//   constructor(public name: string) {
+//     this.name = name;
+//   }
+//   @Bind
+//   logName(): void {
+//     console.log(this.name)
+//   }
+// }
+// const cardd = new TestComponent1('Test Card');
+// type ValidatorType = 'required' | 'email'
+// interface ValidatorConfig {
+//   [prop: string]: {
+//     [validateProp: string]: ValidatorType
+//   }
+// }
+// const validators: ValidatorConfig = {};
+// function Required(target: any, propName: string) {
+//   validators[target.constructor.name] = {
+//     ...validators[target.constructor.name],
+//     [propName]: 'required'
+//   }
+// }
+// function validate(obj: any): boolean {
+//   const objConfig = validators[obj.constructor.name];
+//   if (!objConfig) {
+//     return true;
+//   }
+//   const isValid = true;
+//   Object.keys(objConfig).forEach(key => {
+//     if (objConfig[key] === 'required') {
+//       isValid = isValid && !!obj[key];
+//     }
+//   })
+//   return isValid;
+// }
+// class Form {
+//   @Required
+//   public email: string | void
+//   constructor(email?: string) {
+//     this.email = email;
+//   }
+// }
+// const form = new Form('test@test.test');
+// if (validate(form)) {
+//   console.log('valid', form);
+// } else {
+//   console.log('validation error')
+// }
+// NAMESPACES
+/// <reference path="namespaces.ts" />
+var Form;
+(function (Form) {
+    var MyForm = /** @class */ (function () {
+        function MyForm(email) {
+            this.email = email;
+            this.type = 'inline';
+            this.state = 'active';
+        }
+        MyForm.prototype.getInfo = function () {
+            return {
+                type: this.type,
+                state: this.state
+            };
+        };
+        return MyForm;
+    }());
+})(Form || (Form = {}));
+var form = new MyForm('test@test.test');

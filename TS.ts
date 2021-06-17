@@ -4,7 +4,7 @@
 // RUN TS:
 // tsc fileName.ts
 
-/////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////
 // TYPES (Boolean, Number, String, Null, Undefined,  Array, Tuple, Any, Never, own types)
 // Boolean
 const isSmth: boolean = true;
@@ -40,7 +40,7 @@ const throwError = (message: string): never => {
   throw new Error(message);
 }
 
-// Own type
+// Own type (псевдонимы)
 type Login = string;
 const login: Login = 'admin';
 
@@ -48,15 +48,37 @@ type ID = string | number;
 const id1: ID = 123;
 const id2: ID = '123';
 
+type Band = {
+  name: string,
+  rock: boolean,
+}
+
+type Instruments = {
+  guitar: boolean,
+  drums: boolean,
+  viola: boolean,
+  bass: boolean,
+  piano: boolean,
+  organ: boolean,
+  ukulele: boolean,
+}
+
+type MusicBand = Band & Instruments; // пересечение
+
 // Null
 // Undefined
-type SomeType = string | null | undefined;
+type SomeType = string | null | undefined; // объединение
 const some1: SomeType = null;
+
 
 
 /////////////////////////////////////////////////////////////
 // INTERFACES
-interface IRect {
+/*
+The term interface is often used to define an abstract type 
+that contains no data or code, but defines behaviors as method signatures.
+*/
+interface Rect {
   readonly id: string,
   color?: string,
   size: {
@@ -65,7 +87,7 @@ interface IRect {
   }
 }
 
-const rect1: IRect = {
+const rect1: Rect = {
   id: '123',
   color: '#ccccccc',
   size: {
@@ -74,15 +96,15 @@ const rect1: IRect = {
   },
 };
 
-const rect2 = {} as IRect;
-const rect3 = <IRect>{}; // old syntax
+const rect2 = {} as Rect;
+const rect3 = <Rect>{}; // old syntax
 
 // Inherit interfaces
-interface IRectWithArea extends IRect {
+interface RectWithArea extends Rect {
   getArea: () => number,
 }
 
-const rect5: IRectWithArea = {
+const rect5: RectWithArea = {
   id: '1234',
   color: '#ffffff',
   size: {
@@ -94,12 +116,12 @@ const rect5: IRectWithArea = {
   }
 }
 
-interface IClock {
+interface Clock {
   time: Date,
   setTime(date: Date): void,
 }
 
-class Clock implements IClock {
+class Clock implements Clock {
   time: Date = new Date();
   setTime(date: Date): void {
     this.time = date;
@@ -107,11 +129,11 @@ class Clock implements IClock {
 }
 
 // 
-interface IStyles {
+interface Styles {
   [key: string]: string
 }
 
-const css: IStyles = {
+const css: Styles = {
   border: '1px solid #000000',
   marginTop: '20px',
   borderRadius: '4px',
@@ -324,4 +346,268 @@ type UserKeysNoMeta1 = Pick<User, 'name' | 'email'> // 'name | 'email'
 // const u1: UserKeysNoMeta = 'name';
 // const u2: UserKeysNoMeta = 'createdAt'; // error
 ///////////////////////////////////////////////////////////////////
+// GENERIC TYPES
 
+const cars: string[] = ['Citroen', 'Peugeot'];
+const cars2: Array<string> = ['Toyota', 'Suzuki']; // generic
+
+// const promise: Promise<string> = new Promise(resolve => {
+//   setTimeout(() => {
+//     resolve('Promise resolved')
+//   }, 3000)
+// });
+
+const promise = new Promise<string>(resolve => {
+  setTimeout(() => {
+    resolve('Promise resolved')
+  }, 3000)
+});
+
+promise.then(data => {
+  console.log(data.trim())
+});
+
+function mergeObjects<T extends object, R extends object>(a: T, b: R) {
+  return (<any>Object).assign({}, a, b);
+}
+
+const merged = mergeObjects({ name: 'Dave' }, { band: 'Nirvana' });
+console.log(merged)
+
+interface ILength {
+  length: number,
+}
+
+function withCount<T extends ILength>(value: T): { value: T, count: string } {
+  return {
+    value,
+    count: `${value.length} chars in this object`
+  }
+}
+
+console.log(withCount('Hi, may I? )'))
+
+function getObjectValue<T extends object, R extends keyof T>(obj: T, key: R) {
+  return obj[key];
+}
+
+const person = {
+  name: 'Dave',
+  band: 'Foo Fighters',
+}
+console.log(getObjectValue(person, 'name'));
+console.log(getObjectValue(person, 'band'));
+// console.log(getObjectValue(person, 'age')); // error
+
+// class Collecton<T extends number | string | boolean> {
+//   constructor(private _items: T[] = []) { }
+
+//   add(item: T) {
+//     this._items.push(item);
+//   }
+
+//   remove(item: T) {
+//     this._items = this._items.filter(i => i !== item);
+//   }
+
+//   get items(): T[] {
+//     return this._items;
+//   }
+// }
+
+// const stringsD = new Collecton<string>(['Dave', 'Grohl']);
+// stringsD.add('TCV');
+// stringsD.add('Foo Fighters');
+// stringsD.remove('TCV');
+// console.log(stringsD.items);
+
+
+
+interface AnotherCar {
+  model: string,
+  year: number,
+}
+
+const createAndValidateCar = (model: string, year: number): AnotherCar => {
+  const car: Partial<AnotherCar> = {};
+  if (model.length > 3) {
+    car.model = model;
+  }
+  if (year > 2000) {
+    car.year = year;
+  }
+  return car as AnotherCar;
+}
+
+const someFastCars: Readonly<Array<string>> = ['Toyota', 'Citroen'];
+//someFastCars.shift();
+
+const peugeot: Readonly<AnotherCar> = {
+  model: '307',
+  year: 2007,
+};
+
+//peugeot.year = 2016;
+
+///////////////////////////////////////////////////////////////////////
+// DECORATORS
+
+
+// function Log(constructor: Function) {
+
+// }
+
+// function Log2(target: any, propName: string | Symbol) {
+
+// }
+
+// function Log3(target: any, propName: string | Symbol, descriptor: PropertyDescriptor) {
+
+// }
+
+
+// @Log
+// class TestComponent {
+//   @Log2
+//   name: string
+
+//   @Log3
+//   get componentName() {
+//     return this.name;
+//   }
+
+//   constructor(name: string) {
+//     this.name = name;
+//   }
+
+//   @Log3
+//   logName(): void {
+//     console.log(this.name);
+//   }
+// }
+
+// interface ComponentAngularDecorator {
+//   selector: string
+//   template: string
+// }
+
+// function ComponentAngular(config: ComponentAngularDecorator) {
+//   return function <T extends { new(...args: any[]): object }>(Constructor: T) {
+//     return class extends Constructor {
+//       constructor(...args: any[]) {
+//         super(...args);
+//         const el = document.querySelector(config.selector)!;
+//         el.innerHTML = config.template;
+//       }
+//     }
+//   }
+// }
+
+// function Bind(_: any, _2: any, descriptor: PropertyDescriptor): PropertyDescriptor {
+//   const orig = descriptor.value;
+//   return {
+//     configurable: true,
+//     enumerable: false,
+//     get() {
+//       return orig.bind(this);
+//     }
+//   }
+// }
+
+// @ComponentAngular({
+//   selector: '#test',
+//   template: `
+//     <div class="card">
+//       <div class="card-content">
+//         <span class="card-title">Card Component</span>
+//       </div>
+//     </div>
+//   `,
+// })
+
+// class TestComponent1 {
+//   constructor(public name: string) {
+//     this.name = name;
+//   }
+
+//   @Bind
+//   logName(): void {
+//     console.log(this.name)
+//   }
+// }
+
+// const cardd = new TestComponent1('Test Card');
+
+// type ValidatorType = 'required' | 'email'
+
+// interface ValidatorConfig {
+//   [prop: string]: {
+//     [validateProp: string]: ValidatorType
+//   }
+// }
+
+// const validators: ValidatorConfig = {};
+
+// function Required(target: any, propName: string) {
+//   validators[target.constructor.name] = {
+//     ...validators[target.constructor.name],
+//     [propName]: 'required'
+//   }
+// }
+
+// function validate(obj: any): boolean {
+//   const objConfig = validators[obj.constructor.name];
+//   if (!objConfig) {
+//     return true;
+//   }
+//   const isValid = true;
+//   Object.keys(objConfig).forEach(key => {
+//     if (objConfig[key] === 'required') {
+//       isValid = isValid && !!obj[key];
+//     }
+//   })
+//   return isValid;
+// }
+
+// class Form {
+//   @Required
+//   public email: string | void
+
+//   constructor(email?: string) {
+//     this.email = email;
+//   }
+// }
+
+// const form = new Form('test@test.test');
+// if (validate(form)) {
+//   console.log('valid', form);
+// } else {
+//   console.log('validation error')
+// }
+
+
+// NAMESPACES
+
+/// <reference path="namespaces.ts" />
+
+namespace Form {
+  class MyForm {
+    private type: FormType = 'inline'
+    private state: FormState = 'active'
+
+    constructor(public email: sting) {
+
+    }
+
+    getInfo(): FormInfo {
+      return {
+        type: this.type,
+        state: this.state,
+      }
+    }
+  }
+}
+
+
+
+const form = new MyForm('test@test.test');
