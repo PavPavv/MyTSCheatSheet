@@ -1,1 +1,2 @@
-var msg = 'Hi!';
+"use strict";
+console.log('app ts');

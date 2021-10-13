@@ -1,87 +1,72 @@
+"use strict";
 // DOWNLOAD TS:
 // run npm install -g typescript
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = function (d, b) {
-        extendStatics = Object.setPrototypeOf ||
-            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
-        return extendStatics(d, b);
-    };
-    return function (d, b) {
-        if (typeof b !== "function" && b !== null)
-            throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
 // RUN TS:
 // tsc fileName.ts
-/////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////
 // TYPES (Boolean, Number, String, Null, Undefined,  Array, Tuple, Any, Never, own types)
 // Boolean
-var isSmth = true;
+const isSmth = true;
 // Number
-var num = 42;
-var numF = 42.3;
-var numE = 3e10;
+const num = 42;
+const numF = 42.3;
+const numE = 3e10;
 // String
-var str = 'Something';
+const str = 'Something';
 // Array
-var numArr = [1, 2, 3, 5, 8];
-var numArr1 = [1, 2, 3, 5, 8];
+const numArr = [1, 2, 3, 5, 8];
+const numArr1 = [1, 2, 3, 5, 8];
 // Tuple
-var contactTup = ['James', 12345];
+const contactTup = ['James', 12345];
 // Any
-var anyT = 'test';
+let anyT = 'test';
 anyT = 42;
 //
-var sayMyName = function (name) {
+const sayMyName = (name) => {
     console.log(name);
 };
 //sayMyName('Paul');
 // Never
-var throwError = function (message) {
+const throwError = (message) => {
     throw new Error(message);
 };
-var login = 'admin';
-var id1 = 123;
-var id2 = '123';
-var some1 = null;
-var rect1 = {
+const login = 'admin';
+const id1 = 123;
+const id2 = '123';
+const some1 = null;
+const rect1 = {
     id: '123',
     color: '#ccccccc',
     size: {
         width: 20,
-        height: 20
-    }
+        height: 20,
+    },
 };
-var rect2 = {};
-var rect3 = {}; // old syntax
-var rect5 = {
+const rect2 = {};
+const rect3 = {}; // old syntax
+const rect5 = {
     id: '1234',
     color: '#ffffff',
     size: {
         width: 100,
-        height: 80
+        height: 80,
     },
-    getArea: function () {
+    getArea() {
         return this.size.width * this.size.height;
     }
 };
-var Clock = /** @class */ (function () {
-    function Clock() {
+class Clock {
+    constructor() {
         this.time = new Date();
     }
-    Clock.prototype.setTime = function (date) {
+    setTime(date) {
         this.time = date;
-    };
-    return Clock;
-}());
-var css = {
+    }
+}
+const css = {
     border: '1px solid #000000',
     marginTop: '20px',
-    borderRadius: '4px'
+    borderRadius: '4px',
 };
 //////////////////////////////////////////////////
 // ENUMS
@@ -99,42 +84,41 @@ var SocialMedia;
 })(SocialMedia || (SocialMedia = {}));
 //////////////////////////////////////////////////
 // FUNCTIONS
-var add = function (a, b) {
+const add = (a, b) => {
     return a + b;
 };
-var toUC = function (str) {
+const toUC = (str) => {
     return str.trim().toLocaleUpperCase();
 };
 function position(a, b) {
     if (!a && !b) {
         return {
             x: undefined,
-            y: undefined
+            y: undefined,
         };
     }
     if (a && !b) {
         return {
             x: a,
             y: undefined,
-            "default": a.toString()
+            default: a.toString(),
         };
     }
     return {
         x: a,
-        y: b
+        y: b,
     };
 }
 ///////////////////////////////////////////////
 // CLASSES
-var TypeScript = /** @class */ (function () {
-    function TypeScript(version) {
+class TypeScript {
+    constructor(version) {
         this.version = version;
     }
-    TypeScript.prototype.info = function (name) {
-        return "[" + name + "] TS v is " + this.version;
-    };
-    return TypeScript;
-}());
+    info(name) {
+        return `[${name}] TS v is ${this.version}`;
+    }
+}
 // class Car {
 //   readonly model: string
 //   readonly wheels: number = 4
@@ -142,93 +126,76 @@ var TypeScript = /** @class */ (function () {
 //     this.model = theModel;
 //   }
 // }
-var Car = /** @class */ (function () {
-    function Car(model) {
+class Car {
+    constructor(model) {
         this.model = model;
         this.wheels = 4;
     }
-    return Car;
-}());
+}
 // 3 types of modifiers: protected, private and public
-var Animal = /** @class */ (function () {
-    function Animal() {
+class Animal {
+    constructor() {
         this.voice = '';
         this.color = 'black';
     }
-    Animal.prototype.go = function () {
+    go() {
         console.log('go');
-    };
-    return Animal;
-}());
-var Cat = /** @class */ (function (_super) {
-    __extends(Cat, _super);
-    function Cat() {
-        return _super !== null && _super.apply(this, arguments) || this;
     }
-    Cat.prototype.setVoice = function (voice) {
+}
+class Cat extends Animal {
+    setVoice(voice) {
         this.voice = voice;
-    };
-    return Cat;
-}(Animal));
-var cat = new Cat();
+    }
+}
+const cat = new Cat();
 // Abstract classes
-var Component = /** @class */ (function () {
-    function Component() {
-    }
-    return Component;
-}());
-var AppComponent = /** @class */ (function (_super) {
-    __extends(AppComponent, _super);
-    function AppComponent() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    AppComponent.prototype.render = function () {
+class Component {
+}
+class AppComponent extends Component {
+    render() {
         console.log('Component on render');
-    };
-    AppComponent.prototype.info = function () {
-        return "This is info";
-    };
-    return AppComponent;
-}(Component));
+    }
+    info() {
+        return `This is info`;
+    }
+}
 //////////////////////////////////////////////////
 // GUARDS
-var smth = function (x) {
+const smth = (x) => {
     if (typeof x === 'number') {
         return x.toFixed(2);
     }
     return x.trim();
 };
-var MyResponse = /** @class */ (function () {
-    function MyResponse() {
+class MyResponse {
+    constructor() {
         this.header = 'response header';
         this.result = 'response result';
     }
-    return MyResponse;
-}());
-var MyError = /** @class */ (function () {
-    function MyError() {
+}
+class MyError {
+    constructor() {
         this.header = 'error header';
         this.message = 'error message';
     }
-    return MyError;
-}());
-var handleRE = function (res) {
+}
+const handleRE = (res) => {
     if (res instanceof MyResponse) {
         return {
-            info: res.header + res.result
+            info: res.header + res.result,
         };
     }
     else {
         return {
-            info: res.header + res.message
+            info: res.header + res.message,
         };
     }
 };
-var setAlertType = function (type) {
+const setAlertType = (type) => {
 };
-var arrayOfNumbers = [1, 2, 3, 4, 5];
-var arrayOfStrs = ['Hello', 'you'];
-var arrayOfTup = ['Hello', 2];
+const arrayOfNumbers = [1, 2, 3, 4, 5];
+const arrayOfStrs = ['Hello', 'you'];
+const arrayOfTup = ['Hello', 2];
 function reverse(arr) {
     return arr.reverse();
 }
@@ -239,44 +206,44 @@ reverse(arrayOfTup);
 // const u2: UserKeysNoMeta = 'createdAt'; // error
 ///////////////////////////////////////////////////////////////////
 // GENERIC TYPES
-var cars = ['Citroen', 'Peugeot'];
-var cars2 = ['Toyota', 'Suzuki']; // generic
+const cars = ['Citroen', 'Peugeot'];
+const cars2 = ['Toyota', 'Suzuki']; // generic
 // const promise: Promise<string> = new Promise(resolve => {
 //   setTimeout(() => {
 //     resolve('Promise resolved')
 //   }, 3000)
 // });
-var promise = new Promise(function (resolve) {
-    setTimeout(function () {
+const promise = new Promise(resolve => {
+    setTimeout(() => {
         resolve('Promise resolved');
     }, 3000);
 });
-promise.then(function (data) {
+promise.then(data => {
     console.log(data.trim());
 });
 function mergeObjects(a, b) {
     return Object.assign({}, a, b);
 }
-var merged = mergeObjects({ name: 'Dave' }, { band: 'Nirvana' });
+const merged = mergeObjects({ name: 'Dave' }, { band: 'Nirvana' });
 console.log(merged);
 function withCount(value) {
     return {
-        value: value,
-        count: value.length + " chars in this object"
+        value,
+        count: `${value.length} chars in this object`
     };
 }
 console.log(withCount('Hi, may I? )'));
 function getObjectValue(obj, key) {
     return obj[key];
 }
-var person = {
+const person = {
     name: 'Dave',
-    band: 'Foo Fighters'
+    band: 'Foo Fighters',
 };
 console.log(getObjectValue(person, 'name'));
 console.log(getObjectValue(person, 'band'));
-var createAndValidateCar = function (model, year) {
-    var car = {};
+const createAndValidateCar = (model, year) => {
+    const car = {};
     if (model.length > 3) {
         car.model = model;
     }
@@ -285,11 +252,11 @@ var createAndValidateCar = function (model, year) {
     }
     return car;
 };
-var someFastCars = ['Toyota', 'Citroen'];
+const someFastCars = ['Toyota', 'Citroen'];
 //someFastCars.shift();
-var peugeot = {
+const peugeot = {
     model: '307',
-    year: 2007
+    year: 2007,
 };
 //peugeot.year = 2016;
 ///////////////////////////////////////////////////////////////////////
@@ -404,19 +371,18 @@ var peugeot = {
 /// <reference path="namespaces.ts" />
 var Form;
 (function (Form) {
-    var MyForm = /** @class */ (function () {
-        function MyForm(email) {
+    class MyForm {
+        constructor(email) {
             this.email = email;
             this.type = 'inline';
             this.state = 'active';
         }
-        MyForm.prototype.getInfo = function () {
+        getInfo() {
             return {
                 type: this.type,
-                state: this.state
+                state: this.state,
             };
-        };
-        return MyForm;
-    }());
+        }
+    }
 })(Form || (Form = {}));
-var form = new MyForm('test@test.test');
+const form = new MyForm('test@test.test');
